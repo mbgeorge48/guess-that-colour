@@ -5,6 +5,7 @@ function App() {
   const gameType: "hex" | "rgb" = "hex";
   const [colour, setColour] = useState("");
   const [gameStage, setGameStage] = useState<"ready" | "inprogress">("ready");
+  const [showHelperText, setShowHelperText] = useState(false);
 
   const generateColour = useCallback(() => {
     if (gameType === "hex") {
@@ -73,11 +74,31 @@ function App() {
     return buttons.sort((a, b) => 0.5 - Math.random());
   }, [colour, generateColour, handleLose, handleWin]);
 
+  const toggleHelp = useCallback(() => {
+    setShowHelperText(!showHelperText);
+  }, [showHelperText]);
+
   return (
     <div className="App">
       <p>Guess that colour!</p>
       <div className="Box" style={{ background: colour }} />
       <div className="ButtonGroup">{renderButtonContainer()}</div>
+      <button
+        className="Button"
+        onClick={toggleHelp}
+        style={{ marginTop: "12px" }}
+      >
+        Help?
+      </button>
+      {showHelperText ? (
+        <>
+          <p>
+            The hex colour format follows a pattern, the first 2 digits are red,
+            second 2 are green and last 2 are blue.
+          </p>
+          <p>#000000 is black and #FFFFFF is white</p>
+        </>
+      ) : undefined}
     </div>
   );
 }
